@@ -4,7 +4,6 @@ import com.article.constant.WebUri;
 import com.article.dto.Title;
 import com.article.util.CommonUtil;
 import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -13,7 +12,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-@Slf4j
+
 public class SearchFromBiQuGe {
 
     public static void main (String[] args) {
@@ -27,7 +26,6 @@ public class SearchFromBiQuGe {
         Document document = CommonUtil.getDocument(url);
         Elements bookbox = document.getElementsByClass("bookinfo");
         if (bookbox.size() <= 0) {
-            log.error("搜索不到:{}相应的文章", searchName);
             return Collections.emptyList();
         }
 
