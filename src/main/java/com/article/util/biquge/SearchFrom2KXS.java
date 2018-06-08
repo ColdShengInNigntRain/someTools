@@ -4,6 +4,7 @@ import com.article.constant.SearchWeb;
 import com.article.dto.Title;
 import com.article.util.CommonUtil;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,7 +19,8 @@ public class SearchFrom2KXS {
 
     public static void main (String[] args) {
         String searchName = "有匪";
-        searchNovel(searchName);
+        List<Title> titles = searchNovel(searchName);
+        System.out.println(titles);
     }
 
     public static List<Title> searchNovel(String searchName) {
@@ -38,19 +40,27 @@ public class SearchFrom2KXS {
         url = url.replace("&amp;", "\\&");
         Document document = CommonUtil.getDocument(url);
         //todo
-        Elements bookbox = document.getElementsByClass("bookinfo");
+        Elements bookbox = document.getElementsByClass("odd");
         if (bookbox.size() <= 0) {
             return Collections.emptyList();
         }
 
-        List<Title> titleList = Lists.newArrayListWithCapacity(bookbox.size());
-        Iterator<Element> iterator = bookbox.iterator();
-        while (iterator.hasNext()) {
-            Element element = iterator.next();
-            String author = element.getElementsByClass("author").get(0).childNodes().get(0).toString();
-            Element bookname = element.getElementsByClass("bookname").select("a").get(0);
-            String href = bookname.attributes().get("href");
-            String title = bookname.childNodes().get(0).toString();
+        List<Title> titleList = Lists.newArrayListWithCapacity(bookbox.size()/3);
+
+        for (int i = 0;i < bookbox.size()/3;i ++) {
+            //标题<b style="color:red">有匪</b>
+            String href = bookbox.get(i*3).select("a").get(0).attr("href");
+
+            String title = bookbox.get(i*3).select("a").get(0).toString();
+            title = StringUtils.replaceAll(title, "<b style=\"color:red\">","");
+            title = StringUtils.replaceAll(title, "</b>","");
+            title = StringUtils.substringBetween(title, ">", "<");
+            //作者
+            String author = bookbox.get(i*3 + 1).toString();
+            author = StringUtils.replaceAll(author, "<b style=\"color:red\">","");
+            author = StringUtils.replaceAll(author, "</b>","");
+            author = StringUtils.substringBetween(author, ">", "<");
+
             titleList.add(Title.builder().titleName(title).uri(href).author(author).build());
         }
         return titleList;
