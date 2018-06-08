@@ -19,11 +19,11 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 从笔趣阁获取小说
+ * 从2K小说网获取小说
  * @Author: jiangxinlei
  * @Time: 2018/2/12 14:38
  **/
-public class FetchFromBiQuGe {
+public class FetchFrom2KXS {
 
     public static void main(String[] args) {
         String articleCode = "/20_20368/";
@@ -37,7 +37,7 @@ public class FetchFromBiQuGe {
         FileSystemView fsv = FileSystemView.getFileSystemView();
         File com=fsv.getHomeDirectory();
         String filePath = com.getPath()+"\\articles";
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(articleCode);
+        String url = SearchWeb.KXS.getWebUrl().concat(articleCode);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
@@ -68,7 +68,7 @@ public class FetchFromBiQuGe {
         System.out.println(titleName+" "+(new Date()));
         Integer id = title.getId();
         String uri = title.getUri();
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(uri);
+        String url = SearchWeb.KXS.getWebUrl().concat(uri);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 

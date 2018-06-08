@@ -8,22 +8,36 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 
-public class SearchFromBiQuGe {
+public class SearchFrom2KXS {
 
     public static void main (String[] args) {
-        String searchName = "emm";
+        String searchName = "有匪";
         searchNovel(searchName);
     }
 
     public static List<Title> searchNovel(String searchName) {
-        String url = CommonUtil.transferToSafe(SearchWeb.BIQUGE.getWebUrl().concat("//s.php?q=").concat(searchName));
 
+        StringBuilder sb = new StringBuilder();
+        byte[] bytes = new byte[0];
+        try {
+            bytes = searchName.getBytes("GBK");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        for (byte b : bytes) {
+            sb.append("%").append(Integer.toHexString((b & 0xff)).toUpperCase());
+        }
+
+        String url = CommonUtil.transferToSafe(SearchWeb.KXS.getWebUrl().concat("/modules/article/search.php?searchtype=keywords&searchkey=").concat(sb.toString()));
+        url = url.replace("&amp;", "\\&");
         Document document = CommonUtil.getDocument(url);
+        //todo
         Elements bookbox = document.getElementsByClass("bookinfo");
         if (bookbox.size() <= 0) {
             return Collections.emptyList();
