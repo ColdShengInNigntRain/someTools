@@ -1,6 +1,6 @@
 package com.article.util.biquge;
 
-import com.article.constant.WebUri;
+import com.article.constant.SearchWeb;
 import com.article.dto.Title;
 import com.article.util.CommonUtil;
 import com.google.common.collect.Lists;
@@ -21,7 +21,7 @@ public class SearchFromBiQuGe {
     }
 
     public static List<Title> searchNovel(String searchName) {
-        String url = CommonUtil.transferToSafe(WebUri.BIQUGE.concat("//s.php?q=").concat(searchName));
+        String url = CommonUtil.transferToSafe(SearchWeb.BIQUGE.getWebUrl().concat("//s.php?q=").concat(searchName));
 
         Document document = CommonUtil.getDocument(url);
         Elements bookbox = document.getElementsByClass("bookinfo");

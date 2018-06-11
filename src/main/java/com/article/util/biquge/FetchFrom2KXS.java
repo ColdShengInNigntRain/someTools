@@ -19,43 +19,48 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 从笔趣阁获取小说
+ * 从2K小说网获取小说
  * @Author: jiangxinlei
  * @Time: 2018/2/12 14:38
  **/
-public class FetchFromBiQuGe {
+public class FetchFrom2KXS {
 
     public static void main(String[] args) {
-        String articleCode = "/20_20368/";
-        String articleName = "女帝直播攻略";
+        String articleCode = "https://www.2kxs.com/93054/";
+        String articleName = "有匪";
         fetchNovel(articleName,articleCode);
 
     }
 
-    public static boolean fetchNovel(String articleName, String articleCode) {
+    public static boolean fetchNovel(String articleName, String url) {
         //获取桌面路径
         FileSystemView fsv = FileSystemView.getFileSystemView();
         File com=fsv.getHomeDirectory();
         String filePath = com.getPath()+"\\articles";
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(articleCode);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
         Document document = CommonUtil.getDocument(url);
 
-        List<Title> titles = getTitles(document);
+        String readUrl = document.getElementById("bt_1").select("a").attr("href");
 
-        List<Content> contents = getContents(titles);
+        readUrl = CommonUtil.transferToSafe(readUrl);
+
+        Document readDocument = CommonUtil.getDocument(readUrl);
+
+        List<Title> titles = getTitles(readDocument);
+
+        List<Content> contents = getContents(readUrl, titles);
 
         contents.sort(Comparator.comparing(Content::getTitleId));
         CommonUtil.writeToFile(articleName, contents, filePath);
         return true;
     }
 
-    private static List<Content> getContents(List<Title> titles) {
+    private static List<Content> getContents(String uri, List<Title> titles) {
         List<Content> contents = Lists.newArrayListWithCapacity(titles.size());
         titles.parallelStream().forEach(title -> {
-            Content content = getContent(title);
+            Content content = getContent(uri, title);
             if (content != null) {
                 contents.add(content);
             }
@@ -63,23 +68,31 @@ public class FetchFromBiQuGe {
         return contents;
     }
 
-    private static Content getContent(Title title) {
+    private static Content getContent(String uri, Title title) {
         String titleName = title.getTitleName();
         System.out.println(titleName+" "+(new Date()));
         Integer id = title.getId();
-        String uri = title.getUri();
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(uri);
+        String url = uri.concat(title.getUri());
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
         Document document = CommonUtil.getDocument(url);
 
-        Elements elements = document.getElementsByClass("showtxt");
+        Elements elements = document.getElementsByClass("Text");
         List<Node> nodes = elements.get(0).childNodes();
         StringBuilder sb = new StringBuilder();
         sb.append(titleName).append("\n");
         for (Node node : nodes) {
             String s = node.toString();
+
+            if(StringUtils.isBlank(s)
+                    || s.contains("</a>")
+                    || s.contains("</font>")
+                    || s.contains("</strong>")
+                    || s.contains("</script>")) {
+                continue;
+            }
+
             s = StringUtils.replaceAll(s, "&nbsp;", " ");
             s = StringUtils.replaceAll(s, "<br>", "\n");
             sb.append(s).append("\n");
@@ -89,11 +102,11 @@ public class FetchFromBiQuGe {
 
     private static List<Title> getTitles(Document doc) {
         List<Title> titles = Lists.newArrayList();
-        Elements elements = doc.getElementsByClass("listmain").select("a");
+        Elements elements = doc.getElementsByClass("book").select("a");
         int count = 0;
-        Iterator<Element> iterator = elements.iterator();
-        while (iterator.hasNext()) {
-            Element element = iterator.next();
+
+        for (int i = 4;i<elements.size();i++) {
+            Element element = elements.get(i);
             String titleName = element.childNodes().get(0).toString();
             String url = element.attributes().get("href");
             titles.add(Title.builder().id(count).titleName(dealTitleName(titleName, count)).uri(url).build());
