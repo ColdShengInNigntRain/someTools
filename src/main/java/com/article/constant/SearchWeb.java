@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 public enum SearchWeb {
     NONE("", "无匹配"),
-    BIQUGE("http://www.biqugeg.com", "笔趣阁"),
+    BIQUGE("https://www.biquge.info", "笔趣阁"),
     KXS("https://www.2kxs.com","2K小说");
 
     private String webUrl;

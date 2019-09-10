@@ -26,8 +26,8 @@ import java.util.List;
 public class FetchFromBiQuGe {
 
     public static void main(String[] args) {
-        String articleCode = "/20_20368/";
-        String articleName = "女帝直播攻略";
+        String articleCode = "/24_24159/";
+        String articleName = "放开那个女巫";
         fetchNovel(articleName,articleCode);
 
     }
@@ -45,17 +45,17 @@ public class FetchFromBiQuGe {
 
         List<Title> titles = getTitles(document);
 
-        List<Content> contents = getContents(titles);
+        List<Content> contents = getContents(titles, articleCode);
 
         contents.sort(Comparator.comparing(Content::getTitleId));
         CommonUtil.writeToFile(articleName, contents, filePath);
         return true;
     }
 
-    private static List<Content> getContents(List<Title> titles) {
+    private static List<Content> getContents(List<Title> titles, String articleCode) {
         List<Content> contents = Lists.newArrayListWithCapacity(titles.size());
         titles.parallelStream().forEach(title -> {
-            Content content = getContent(title);
+            Content content = getContent(title, articleCode);
             if (content != null) {
                 contents.add(content);
             }
@@ -63,19 +63,19 @@ public class FetchFromBiQuGe {
         return contents;
     }
 
-    private static Content getContent(Title title) {
+    private static Content getContent(Title title, String articleCode) {
         String titleName = title.getTitleName();
         System.out.println(titleName+" "+(new Date()));
         Integer id = title.getId();
         String uri = title.getUri();
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(uri);
+        String url = SearchWeb.BIQUGE.getWebUrl().concat(articleCode).concat(uri);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
         Document document = CommonUtil.getDocument(url);
 
-        Elements elements = document.getElementsByClass("showtxt");
-        List<Node> nodes = elements.get(0).childNodes();
+        Element element = document.getElementById("content");
+        List<Node> nodes = element.childNodes();
         StringBuilder sb = new StringBuilder();
         sb.append(titleName).append("\n");
         for (Node node : nodes) {
@@ -89,7 +89,7 @@ public class FetchFromBiQuGe {
 
     private static List<Title> getTitles(Document doc) {
         List<Title> titles = Lists.newArrayList();
-        Elements elements = doc.getElementsByClass("listmain").select("a");
+        Elements elements = doc.getElementsByClass("box_con").get(1).select("a");
         int count = 0;
         Iterator<Element> iterator = elements.iterator();
         while (iterator.hasNext()) {
