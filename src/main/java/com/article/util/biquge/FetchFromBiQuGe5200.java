@@ -13,10 +13,7 @@ import org.jsoup.select.Elements;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 从笔趣阁获取小说
@@ -26,8 +23,8 @@ import java.util.List;
 public class FetchFromBiQuGe5200 {
 
     public static void main(String[] args) {
-        String articleCode = "/24_24159/";
-        String articleName = "放开那个女巫";
+        String articleCode = "/104_104689/";
+        String articleName = "我的一天有48小时";
         fetchNovel(articleName,articleCode);
 
     }
@@ -54,7 +51,7 @@ public class FetchFromBiQuGe5200 {
 
     private static List<Content> getContents(List<Title> titles, String articleCode) {
         List<Content> contents = Lists.newArrayListWithCapacity(titles.size());
-        titles.parallelStream().forEach(title -> {
+        titles.forEach(title -> {
             Content content = getContent(title, articleCode);
             if (content != null) {
                 contents.add(content);
@@ -67,8 +64,7 @@ public class FetchFromBiQuGe5200 {
         String titleName = title.getTitleName();
         System.out.println(titleName+" "+(new Date()));
         Integer id = title.getId();
-        String uri = title.getUri();
-        String url = SearchWeb.BIQUGE.getWebUrl().concat(articleCode).concat(uri);
+        String url = title.getUri();
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
@@ -82,6 +78,7 @@ public class FetchFromBiQuGe5200 {
             String s = node.toString();
             s = StringUtils.replaceAll(s, "&nbsp;", " ");
             s = StringUtils.replaceAll(s, "<br>", "\n");
+            s = StringUtils.replaceAll(s, "<p>", "").replaceAll("</p>","\n");
             sb.append(s).append("\n");
         }
         return Content.builder().titleId(id).title(titleName).content(sb.toString()).build();

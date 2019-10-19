@@ -14,7 +14,7 @@ public enum SearchWeb {
     NONE("", "无匹配"),
     BIQUGE("https://www.biquge.info", "笔趣阁1"),
     BIQUKE("https://www.biquke.com", "笔趣阁2"),
-    BIQUGE5200("https://www.biquge5200.cc", "笔趣阁3"),
+    BIQUGE5200("http://www.b5200.net", "笔趣阁3"),
     KXS("https://www.2kxs.com","2K小说");
 
     private String webUrl;

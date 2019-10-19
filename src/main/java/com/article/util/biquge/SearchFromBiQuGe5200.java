@@ -16,7 +16,7 @@ import java.util.List;
 public class SearchFromBiQuGe5200 {
 
     public static void main (String[] args) {
-        String searchName = "我";
+        String searchName = "我的一天有48小时";
         searchNovel(searchName);
     }
 
@@ -37,7 +37,7 @@ public class SearchFromBiQuGe5200 {
                 continue;
             }
             String author = td.get(2).toString();
-            Element bookname = td.get(0);
+            Element bookname = td.get(0).getElementsByTag("a").get(0);
             String href = bookname.attributes().get("href");
             String title = bookname.childNodes().get(0).toString();
             titleList.add(Title.builder().titleName(title).uri(href).author(author).build());

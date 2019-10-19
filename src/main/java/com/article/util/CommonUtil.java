@@ -22,9 +22,9 @@ public class CommonUtil {
     public static Document getDocument(String url) {
         Document doc = null;
         int num = 10;
-        while (num > 0) {
+        while (num > 0 && doc == null) {
             try {
-                doc = Jsoup.connect(url).timeout(5000).get();
+                doc = Jsoup.connect(url).timeout(10000).get();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("重试一次");
