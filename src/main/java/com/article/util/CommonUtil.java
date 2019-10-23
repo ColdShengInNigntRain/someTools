@@ -21,20 +21,36 @@ public class CommonUtil {
 
     public static Document getDocument(String url) {
         Document doc = null;
-        int num = 10;
-        while (num > 0 && doc == null) {
+
+        while (doc == null) {
             try {
                 doc = Jsoup.connect(url).timeout(10000).get();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("重试一次");
-                num --;
                 continue;
             }
             break;
         }
         return doc;
     }
+
+//    public static Document getDocument(String url) {
+//        Document doc = null;
+//        int num = 10;
+//        while (num > 0 && doc == null) {
+//            try {
+//                doc = Jsoup.connect(url).timeout(10000).get();
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//                System.out.println("重试一次");
+//                num --;
+//                continue;
+//            }
+//            break;
+//        }
+//        return doc;
+//    }
 
     public static void writeToFile(String articleName, List<Content> contents, String filePath) {
         makeDirs(filePath);

@@ -16,7 +16,7 @@ import java.util.List;
 public class SearchFromBiQuGe5200 {
 
     public static void main (String[] args) {
-        String searchName = "小呆昭";
+        String searchName = "天才魔法师与天然呆勇者";
         searchNovel(searchName);
     }
 

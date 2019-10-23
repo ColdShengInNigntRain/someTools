@@ -23,8 +23,8 @@ import java.util.*;
 public class FetchFromBiQuGe5200 {
 
     public static void main(String[] args) {
-        String articleCode = "/104_104689/";
-        String articleName = "我的一天有48小时";
+        String articleCode = "/49_49135/";
+        String articleName = "天才魔法师与天然呆勇者";
         fetchNovel(articleName,articleCode);
 
     }
@@ -51,7 +51,7 @@ public class FetchFromBiQuGe5200 {
 
     private static List<Content> getContents(List<Title> titles, String articleCode) {
         List<Content> contents = Lists.newArrayListWithCapacity(titles.size());
-        titles.forEach(title -> {
+        titles.parallelStream().forEach(title -> {
             Content content = getContent(title, articleCode);
             if (content != null) {
                 contents.add(content);
