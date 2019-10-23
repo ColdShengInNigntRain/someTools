@@ -84,6 +84,10 @@ public class UIForSearch {
                     titles = SearchFromBiQuGe.searchNovel(searchName);
                 } else if (selectedSrc.equals(SearchWeb.KXS)) {
                     titles = SearchFrom2KXS.searchNovel(searchName);
+                } else if (selectedSrc.equals(SearchWeb.BIQUKE)) {
+                    titles = SearchFromBiQuKe.searchNovel(searchName);
+                } else if (selectedSrc.equals(SearchWeb.BIQUGE5200)) {
+                    titles = SearchFromBiQuGe5200.searchNovel(searchName);
                 }
 
                 if (CollectionUtils.isEmpty(titles)) {
@@ -123,6 +127,10 @@ public class UIForSearch {
             result = FetchFromBiQuGe.fetchNovel(titleName, uri);
         } else if (searchWeb.equals(SearchWeb.KXS)) {
             result = FetchFrom2KXS.fetchNovel(titleName, uri);
+        } else if (searchWeb.equals(SearchWeb.BIQUKE)) {
+            result = FetchFromBiQuKe.fetchNovel(titleName, uri);
+        } else if (searchWeb.equals(SearchWeb.BIQUGE5200)) {
+            result = FetchFromBiQuGe5200.fetchNovel(titleName, uri);
         }
 
         if (result) {

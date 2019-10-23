@@ -16,7 +16,7 @@ import java.util.List;
 public class SearchFromBiQuGe5200 {
 
     public static void main (String[] args) {
-        String searchName = "我的一天有48小时";
+        String searchName = "小呆昭";
         searchNovel(searchName);
     }
 
