@@ -23,7 +23,7 @@ public class SearchFromBiQuKe {
     public static List<Title> searchNovel(String searchName) {
         String url = CommonUtil.transferToSafe(SearchWeb.BIQUKE.getWebUrl().concat("//s.php?q=").concat(searchName));
 
-        Document document = CommonUtil.getDocument(url);
+        Document document = CommonUtil.getDocumentByGet(url);
         Elements bookbox = document.getElementsByClass("bookinfo");
         if (bookbox.size() <= 0) {
             return Collections.emptyList();

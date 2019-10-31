@@ -22,7 +22,7 @@ public class SearchFromBiQuGe5200 {
 
     public static List<Title> searchNovel(String searchName) {
         String url = CommonUtil.transferToSafe(SearchWeb.BIQUGE5200.getWebUrl().concat("/modules/article/search.php?searchkey=").concat(searchName));
-        Document document = CommonUtil.getDocument(url);
+        Document document = CommonUtil.getDocumentByGet(url);
         Elements bookbox = document.getElementsByTag("tr");
         if (bookbox.size() <= 1) {
             return Collections.emptyList();

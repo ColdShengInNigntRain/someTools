@@ -6,12 +6,10 @@ import com.article.util.CommonUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -38,7 +36,7 @@ public class SearchFrom2KXS {
 
         String url = CommonUtil.transferToSafe(SearchWeb.KXS.getWebUrl().concat("/modules/article/search.php?searchtype=keywords&searchkey=").concat(sb.toString()));
         url = url.replace("&amp;", "\\&");
-        Document document = CommonUtil.getDocument(url);
+        Document document = CommonUtil.getDocumentByGet(url);
         //todo
         Elements bookbox = document.getElementsByClass("odd");
         if (bookbox.size() <= 0) {

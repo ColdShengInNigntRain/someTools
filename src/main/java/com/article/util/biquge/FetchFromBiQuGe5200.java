@@ -38,7 +38,7 @@ public class FetchFromBiQuGe5200 {
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
-        Document document = CommonUtil.getDocument(url);
+        Document document = CommonUtil.getDocumentByGet(url);
 
         List<Title> titles = getTitles(document);
 
@@ -68,7 +68,7 @@ public class FetchFromBiQuGe5200 {
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
-        Document document = CommonUtil.getDocument(url);
+        Document document = CommonUtil.getDocumentByGet(url);
 
         Element element = document.getElementById("content");
         List<Node> nodes = element.childNodes();

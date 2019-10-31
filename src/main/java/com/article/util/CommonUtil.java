@@ -8,6 +8,7 @@ import org.jsoup.safety.Whitelist;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: jiangxinlei
@@ -19,7 +20,7 @@ public class CommonUtil {
         return Jsoup.clean(url, Whitelist.basic());
     }
 
-    public static Document getDocument(String url) {
+    public static Document getDocumentByGet(String url) {
         Document doc = null;
 
         while (doc == null) {
@@ -35,7 +36,23 @@ public class CommonUtil {
         return doc;
     }
 
-//    public static Document getDocument(String url) {
+    public static Document getDocumentByPost(String url, Map<String, String> param) {
+        Document doc = null;
+
+        while (doc == null) {
+            try {
+                doc = Jsoup.connect(url).timeout(10000).data(param).post();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("重试一次");
+                continue;
+            }
+            break;
+        }
+        return doc;
+    }
+
+//    public static Document getDocumentByGet(String url) {
 //        Document doc = null;
 //        int num = 10;
 //        while (num > 0 && doc == null) {
