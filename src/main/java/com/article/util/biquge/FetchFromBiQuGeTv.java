@@ -22,11 +22,11 @@ import java.util.*;
  * @Author: jiangxinlei
  * @Time: 2018/2/12 14:38
  **/
-public class FetchFromBiQuKan {
+public class FetchFromBiQuGeTv {
 
     public static void main(String[] args) {
-        String articleCode = "/2_2760/";
-        String articleName = "庆余年";
+        String articleCode = "/11_11555/";
+        String articleName = "退后让为师来";
         fetchNovel(articleName,articleCode);
     }
 
@@ -35,7 +35,7 @@ public class FetchFromBiQuKan {
         FileSystemView fsv = FileSystemView.getFileSystemView();
         File com=fsv.getHomeDirectory();
         String filePath = com.getPath()+"\\articles";
-        String url = SearchWeb.BIQUKAN.getWebUrl().concat(articleCode);
+        String url = SearchWeb.BIQUGETV.getWebUrl().concat(articleCode);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
@@ -85,7 +85,7 @@ public class FetchFromBiQuKan {
     }
 
     private static ContentDTO getContent(String uri, String titleName, Integer id) {
-        String url = SearchWeb.BIQUKAN.getWebUrl().concat(uri);
+        String url = SearchWeb.BIQUGETV.getWebUrl().concat(uri);
         //消除不受信任的HTML(防止XSS攻击)
         url = CommonUtil.transferToSafe(url);
 
@@ -115,7 +115,7 @@ public class FetchFromBiQuKan {
 
     private static List<Title> getTitles(Document doc) {
         List<Title> titles = Lists.newArrayList();
-        Elements elements = doc.getElementsByClass("listmain").get(0).select("dd").select("a");
+        Elements elements = doc.getElementById("list").select("dd").select("a");
         int count = 0;
         Iterator<Element> iterator = elements.iterator();
         while (iterator.hasNext()) {
