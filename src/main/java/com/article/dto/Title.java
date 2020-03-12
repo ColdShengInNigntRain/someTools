@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 小说章节DTO
- * @Author: jiangxinlei
+ * @Author: 夜雨寒笙
  * @Time: 2018/2/12 15:20
  **/
 @Data

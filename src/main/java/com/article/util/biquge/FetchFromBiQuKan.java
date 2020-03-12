@@ -19,7 +19,7 @@ import java.util.*;
 
 /**
  * 从笔趣阁获取小说
- * @Author: jiangxinlei
+ * @Author: 夜雨寒笙
  * @Time: 2018/2/12 14:38
  **/
 public class FetchFromBiQuKan {
