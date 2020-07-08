@@ -25,7 +25,7 @@ public class CommonUtil {
 
         while (doc == null) {
             try {
-                doc = Jsoup.connect(url).timeout(10000).get();
+                doc = Jsoup.connect(url).timeout(20000).get();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("重试一次");
